@@ -10,10 +10,11 @@ if ($db->connect_error) {
   die('Connect Error (' . $mysqli->connect_errno . ') '. $mysqli->connect_error);
 }
 
-if ( $token !== VALID_TOKEN ) {
-  die('invalid token');
-}
 try{
+  if ( $token !== VALID_TOKEN ) {
+    throw new Exception("invalid token");
+  }
+
   switch( $action ){
     case "read";
       //db.php?token=ESEMPIODITOKENVALIDO&action=read&table=tablename&where={"field1":1,"field1":2}
@@ -48,7 +49,7 @@ try{
         );
       } else {
         $result = array(
-          "message" => "query fail"
+          "error" => "query fail"
         );
       }
       break;
