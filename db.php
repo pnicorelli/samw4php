@@ -6,11 +6,14 @@ $db = new mysqli(HOST, USER, PASSW, DBNAME);
 $action = get("action");
 $token = get("token");
 
-if ($db->connect_error) {
-  die('Connect Error (' . $mysqli->connect_errno . ') '. $mysqli->connect_error);
-}
+
 
 try{
+
+  if ($db->connect_error) {
+    throw new Exception("Connect Error ({$mysqli->connect_errno}) {$mysqli->connect_error}");
+  }
+
   if ( $token !== VALID_TOKEN ) {
     throw new Exception("invalid token");
   }
@@ -28,7 +31,7 @@ try{
         }
         if( empty($result) ){
           $result = array(
-            "message" => "0 record(s) found"
+            "message" => "empty result set "
           );
         }
       } else {
